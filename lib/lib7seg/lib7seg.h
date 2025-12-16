@@ -9,6 +9,13 @@ void setup7seg();
 
 void setDots(uint8_t val);
 
+// Set sign indicator (LED on A5). true => negative (LED on)
+void setSign(bool negative);
+
+// Display a positive floating value, choosing decimal scaling to fit 4 digits.
+// If value is too large to display, shows EEEE.
+void displayFloat(float value);
+
 void refresh();
 
 void setNumber(uint32_t nNumber);
