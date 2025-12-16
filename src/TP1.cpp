@@ -15,6 +15,21 @@ void tache2(void);
 void setNumber(uint32_t nNumber);
 void setDigit(uint8_t nDigitActif, uint8_t nSegsActif);
 
+void setupTimer2(){
+    cli(); // disable all interrupts
+    TCCR2A = (1<<WGM21)|(0<<WGM20); // Mode CTC
+    TIMSK2 = (1<<OCIE2A); // Local interruption OCIE2A
+    TCCR2B = (0<<WGM22)|(1<<CS22)|(1<<CS21); // prediviser /256
+    OCR2A = 250; //250*256*1/16000000 = 4ms
+    sei(); // enable all interrupts
+    }
+    //appelée toutes les 4ms:
+    ISR(TIMER2_COMPA_vect){ // timer compare interrupt service routine
+    tache2();
+}
+
+
+
 void setup(void) {
     for (uint8_t i = 0; i < sizeof(digitPins) / sizeof(digitPins[0]); i++) {
         pinMode(digitPins[i], OUTPUT);
@@ -24,21 +39,17 @@ void setup(void) {
         pinMode(segmentPins[j], OUTPUT);
         digitalWrite(segmentPins[j], LOW);
     }
+    setupTimer2();
 }
 
 void loop() {
     unsigned int periodiciteTache1=100; //100ms entre chaque incrémentation de la valeur à afficher
-    unsigned int periodiciteTache2=4; //4ms pour l'affichage de chaque digit
     static unsigned long timerTache1 = millis();
-    static unsigned long timerTache2 = millis();
     if (millis() - timerTache1 >= periodiciteTache1) {
         timerTache1 += periodiciteTache1;
         tache1();
     }
-    if (millis() - timerTache2 >= periodiciteTache2) {
-        timerTache2 += periodiciteTache2;
-        tache2();
-    }
+
 }
 
 void tache1(void)
