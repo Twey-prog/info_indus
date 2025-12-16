@@ -4,6 +4,14 @@
 
 void tache1(void);
 
+// Encoder (KY-040) on A0/A1: polled quadrature
+volatile long encoderCount = 0;
+uint8_t lastEncoded = 0;
+const int8_t enc_states[] = {0,-1,1,0,1,0,0,-1,-1,0,0,1,0,1,-1,0};
+
+// display mode: false=position, true=speed (button on A4)
+bool modeSpeed = false;
+
 // Application data
 unsigned int datain[4] = {0, 0, 0, 0}; // sampled inputs
 uint8_t currentInput = 0;               // selected input index (0..3)
@@ -34,23 +42,68 @@ void setup(void) {
   Serial.begin(9600);
   // Timer setup remains in main
   setupTimer2();
+  // Mode button on A4
+  pinMode(A4, INPUT_PULLUP);
+  // Encoder pins
+  pinMode(A0, INPUT_PULLUP);
+  pinMode(A1, INPUT_PULLUP);
+  lastEncoded = (digitalRead(A0) << 1) | digitalRead(A1);
 }
 
 void loop() {
     unsigned int periodiciteTache1=100; //100ms entre chaque incrémentation de la valeur à afficher
   static unsigned long timerTache1 = millis();
   static unsigned long timerTache2 = millis();
+  static unsigned long timerDisplay = millis();
+  const unsigned int displayPeriod = 200; // 5 Hz
+  static long lastPos = 0;
+  static unsigned long lastPosTime = 0;
   // Task1: sampling every 100ms
   if (millis() - timerTache1 >= periodiciteTache1) {
     timerTache1 += periodiciteTache1;
     tache1();
+  }
+  // Poll encoder frequently (non-blocking)
+  {
+    uint8_t MSB = digitalRead(A0);
+    uint8_t LSB = digitalRead(A1);
+    uint8_t encoded = (MSB << 1) | LSB;
+    uint8_t sum = (lastEncoded << 2) | encoded;
+    encoderCount += enc_states[sum & 0x0F];
+    lastEncoded = encoded;
   }
   // Task2: switch displayed input every 2000ms (2s)
   if (millis() - timerTache2 >= 2000) {
     timerTache2 += 2000;
     tache2();
   }
-  // Task3: run at maximum cadence to push selected value to display
+  // Display update at 5 Hz: show position or speed depending on A4
+  if (millis() - timerDisplay >= displayPeriod) {
+    timerDisplay += displayPeriod;
+    modeSpeed = (digitalRead(A4) == LOW);
+    long pos = (long)encoderCount;
+    unsigned long now = millis();
+    unsigned long dt = now - lastPosTime;
+    float speed = 0.0f;
+    if (dt > 0) speed = ((float)(pos - lastPos)) * (1000.0f / (float)dt);
+    lastPos = pos;
+    lastPosTime = now;
+
+    if (modeSpeed) {
+      setSign(speed < 0.0f);
+      displayFloat(fabs(speed));
+    } else {
+      setSign(pos < 0);
+      long v = pos < 0 ? -pos : pos;
+      if (v > 9999) {
+        // display error EEEE
+        displayFloat(-1.0f); // library treats negative as error
+      } else {
+        setNumber((uint32_t)v);
+      }
+    }
+  }
+  // Task3: keep selected input visible (legacy behaviour)
   tache3();
 
 }

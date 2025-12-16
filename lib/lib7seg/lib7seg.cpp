@@ -1,4 +1,5 @@
 #include "lib7seg.h"
+#include <math.h>
 
 // Hardware configuration and state
 uint8_t numDigits = 4;
@@ -24,8 +25,65 @@ void setup7seg()
         digitalWrite(segmentPins[j], LOW);
     }
 
-    DDRC |= (1 << 3);   // PC3 as output
+    DDRC |= (1 << 3);   // PC3 as output (probe)
     PORTC &= ~(1 << 3); // PC3 low
+
+    // Configure sign LED on A5
+    pinMode(A5, OUTPUT);
+    digitalWrite(A5, LOW);
+}
+
+void setSign(bool negative)
+{
+    digitalWrite(A5, negative ? HIGH : LOW);
+}
+
+void displayFloat(float value)
+{
+    if (!(value >= 0.0f)) {
+        // For negative or NaN, display EEEE
+        for (int i = 0; i < 4; ++i) rawDigits[i] = 14; // 'E'
+        for (int i = 0; i < 4; ++i) number[i] = tabDeco7seg[rawDigits[i]];
+        return;
+    }
+
+    // Choose decimal places 0..3 so value*10^d < 10000
+    int chosen_d = -1;
+    uint32_t intval = 0;
+    for (int d = 3; d >= 0; --d) {
+        double scaled = value * pow(10.0, d);
+        uint32_t cand = (uint32_t)round(scaled);
+        if (cand < 10000u) {
+            chosen_d = d;
+            intval = cand;
+            break;
+        }
+    }
+
+    if (chosen_d < 0) {
+        // value too large -> show EEEE
+        for (int i = 0; i < 4; ++i) rawDigits[i] = 14; // 'E'
+        for (int i = 0; i < 4; ++i) number[i] = tabDeco7seg[rawDigits[i]];
+        return;
+    }
+
+    // Fill rawDigits with intval (MSB at index 0)
+    for (int i = 0; i < 4; ++i) {
+        rawDigits[3 - i] = intval % 10;
+        intval /= 10;
+    }
+
+    // Build dots mask: place decimal point after numDigits - 1 - chosen_d
+    uint8_t dots_mask = 0;
+    if (chosen_d > 0) {
+        int dotIndex = numDigits - 1 - chosen_d;
+        if (dotIndex >= 0 && dotIndex < numDigits) dots_mask = (1u << dotIndex);
+    }
+
+    dots = dots_mask & 0x0F;
+    for (int i = 0; i < 4; i++) {
+        number[i] = tabDeco7seg[rawDigits[i]] | ((dots >> i) & 1 ? 0x80 : 0x00);
+    }
 }
 
 void setDots(uint8_t val)
