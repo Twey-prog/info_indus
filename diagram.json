@@ -1,0 +1,369 @@
+{
+  "version": 1,
+  "author": "Uri Shaked",
+  "editor": "wokwi",
+  "serialMonitor": {
+    "display": "plotter",
+    "newline": "lf"
+  },
+  "parts": [
+    {
+      "type": "wokwi-arduino-uno",
+      "id": "uno",
+      "top": 128,
+      "left": 20,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-7segment",
+      "id": "display",
+      "top": -14.28,
+      "left": 63.59,
+      "attrs": {
+        "digits": "4",
+        "common": "cathode"
+      }
+    },
+    {
+      "type": "wokwi-logic-analyzer",
+      "id": "logic1",
+      "top": 165.29,
+      "left": 365.03,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-slide-potentiometer",
+      "id": "pot1",
+      "top": 422.93,
+      "left": -30,
+      "rotate": 90,
+      "attrs": {
+        "travelLength": "30"
+      }
+    },
+    {
+      "type": "wokwi-slide-potentiometer",
+      "id": "pot2",
+      "top": 422.93,
+      "left": 70,
+      "rotate": 90,
+      "attrs": {
+        "travelLength": "30"
+      }
+    },
+    {
+      "type": "wokwi-slide-potentiometer",
+      "id": "pot3",
+      "top": 422.93,
+      "left": 170,
+      "rotate": 90,
+      "attrs": {
+        "travelLength": "30"
+      }
+    },
+    {
+      "type": "wokwi-slide-potentiometer",
+      "id": "pot4",
+      "top": 422.93,
+      "left": 270,
+      "rotate": 90,
+      "attrs": {
+        "travelLength": "30"
+      }
+    }
+  ],
+  "connections": [
+    [
+      "uno:2",
+      "display:DIG1",
+      "blue",
+      [
+        "v-12",
+        "h24",
+        "*",
+        "v-24"
+      ]
+    ],
+    [
+      "uno:3",
+      "display:DIG2",
+      "orange",
+      [
+        "v-16",
+        "h28",
+        "*",
+        "v-16"
+      ]
+    ],
+    [
+      "uno:4",
+      "display:DIG3",
+      "red",
+      [
+        "v-20",
+        "h32",
+        "*",
+        "v-12"
+      ]
+    ],
+    [
+      "uno:5",
+      "display:DIG4",
+      "purple",
+      [
+        "v-32",
+        "*",
+        "h0"
+      ]
+    ],
+    [
+      "uno:6",
+      "display:A",
+      "gray",
+      [
+        "v-24",
+        "h46",
+        "*",
+        "v-20"
+      ]
+    ],
+    [
+      "uno:7",
+      "display:B",
+      "green",
+      [
+        "v-28",
+        "h50",
+        "*",
+        "v-8"
+      ]
+    ],
+    [
+      "uno:8",
+      "display:C",
+      "blue",
+      [
+        "v-28",
+        "*",
+        "h0"
+      ]
+    ],
+    [
+      "uno:9",
+      "display:D",
+      "orange",
+      [
+        "v-20",
+        "*",
+        "h0"
+      ]
+    ],
+    [
+      "uno:10",
+      "display:E",
+      "red",
+      [
+        "v-16",
+        "*",
+        "h0"
+      ]
+    ],
+    [
+      "uno:11",
+      "display:F",
+      "purple",
+      [
+        "v-12",
+        "h-104",
+        "*",
+        "v-16"
+      ]
+    ],
+    [
+      "uno:12",
+      "display:G",
+      "gray",
+      [
+        "v-24",
+        "*",
+        "h0"
+      ]
+    ],
+    [
+      "logic1:D4",
+      "uno:10",
+      "green",
+      [
+        "h0"
+      ]
+    ],
+    [
+      "logic1:D5",
+      "uno:11",
+      "green",
+      [
+        "h0"
+      ]
+    ],
+    [
+      "logic1:D6",
+      "uno:12",
+      "green",
+      [
+        "h0"
+      ]
+    ],
+    [
+      "logic1:GND",
+      "uno:GND.2",
+      "black",
+      [
+        "h0"
+      ]
+    ],
+    [
+      "display:DP",
+      "uno:13",
+      "green",
+      [
+        "v0"
+      ]
+    ],
+    [
+      "logic1:D0",
+      "uno:2",
+      "green",
+      [
+        "h0"
+      ]
+    ],
+    [
+      "uno:3",
+      "logic1:D1",
+      "green",
+      [
+        "v0"
+      ]
+    ],
+    [
+      "logic1:D2",
+      "uno:4",
+      "green",
+      [
+        "h0"
+      ]
+    ],
+    [
+      "uno:5",
+      "logic1:D3",
+      "green",
+      [
+        "v0"
+      ]
+    ],
+    [
+      "logic1:D7",
+      "uno:A3",
+      "green",
+      [
+        "h0"
+      ]
+    ],
+    [
+      "pot1:SIG",
+      "uno:A0",
+      "green",
+      [
+        "v0"
+      ]
+    ],
+    [
+      "pot1:VCC",
+      "uno:5V",
+      "red",
+      [
+        "v0"
+      ]
+    ],
+    [
+      "pot1:GND",
+      "uno:GND.2",
+      "black",
+      [
+        "v0"
+      ]
+    ],
+    [
+      "pot2:SIG",
+      "uno:A1",
+      "green",
+      [
+        "v0"
+      ]
+    ],
+    [
+      "pot2:VCC",
+      "uno:5V",
+      "red",
+      [
+        "v0"
+      ]
+    ],
+    [
+      "pot2:GND",
+      "uno:GND.2",
+      "black",
+      [
+        "v0"
+      ]
+    ],
+    [
+      "pot3:SIG",
+      "uno:A2",
+      "green",
+      [
+        "v0"
+      ]
+    ],
+    [
+      "pot3:VCC",
+      "uno:5V",
+      "red",
+      [
+        "v0"
+      ]
+    ],
+    [
+      "pot3:GND",
+      "uno:GND.2",
+      "black",
+      [
+        "v0"
+      ]
+    ],
+    [
+      "pot4:SIG",
+      "uno:A4",
+      "green",
+      [
+        "v0"
+      ]
+    ],
+    [
+      "pot4:VCC",
+      "uno:5V",
+      "red",
+      [
+        "v0"
+      ]
+    ],
+    [
+      "pot4:GND",
+      "uno:GND.2",
+      "black",
+      [
+        "v0"
+      ]
+    ]
+  ]
+}
