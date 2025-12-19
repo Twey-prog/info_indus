@@ -1,0 +1,283 @@
+{
+  "version": 1,
+  "author": "Bertrand Vandeportaele",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-arduino-uno",
+      "id": "uno",
+      "top": 128,
+      "left": 20,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-7segment",
+      "id": "display",
+      "top": -14.28,
+      "left": 63.59,
+      "attrs": {
+        "digits": "4",
+        "common": "cathode"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led1",
+      "top": -14.28,
+      "left": -30,
+      "attrs": {
+        "color": "red"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "leda",
+      "top": 380.34,
+      "left": 236.43,
+      "attrs": {
+        "color": "red",
+        "label": "choix affichage"
+      }
+    },
+    {
+      "type": "wokwi-slide-switch",
+      "id": "swa",
+      "top": 400.11,
+      "left": 288.25,
+      "rotate": 90,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-ky-040",
+      "id": "encoder1",
+      "top": 346.34,
+      "left": 23.32,
+      "attrs": {}
+    }
+  ],
+  "connections": [
+    [
+      "uno:2",
+      "display:DIG1",
+      "blue",
+      [
+        "v-12",
+        "h24",
+        "*",
+        "v-24"
+      ]
+    ],
+    [
+      "uno:3",
+      "display:DIG2",
+      "orange",
+      [
+        "v-16",
+        "h28",
+        "*",
+        "v-16"
+      ]
+    ],
+    [
+      "uno:4",
+      "display:DIG3",
+      "red",
+      [
+        "v-20",
+        "h32",
+        "*",
+        "v-12"
+      ]
+    ],
+    [
+      "uno:5",
+      "display:DIG4",
+      "purple",
+      [
+        "v-32",
+        "*",
+        "h0"
+      ]
+    ],
+    [
+      "uno:6",
+      "display:A",
+      "gray",
+      [
+        "v-24",
+        "h46",
+        "*",
+        "v-20"
+      ]
+    ],
+    [
+      "uno:7",
+      "display:B",
+      "green",
+      [
+        "v-28",
+        "h50",
+        "*",
+        "v-8"
+      ]
+    ],
+    [
+      "uno:8",
+      "display:C",
+      "blue",
+      [
+        "v-28",
+        "*",
+        "h0"
+      ]
+    ],
+    [
+      "uno:9",
+      "display:D",
+      "orange",
+      [
+        "v-20",
+        "*",
+        "h0"
+      ]
+    ],
+    [
+      "uno:10",
+      "display:E",
+      "red",
+      [
+        "v-16",
+        "*",
+        "h0"
+      ]
+    ],
+    [
+      "uno:11",
+      "display:F",
+      "purple",
+      [
+        "v-12",
+        "h-104",
+        "*",
+        "v-16"
+      ]
+    ],
+    [
+      "uno:12",
+      "display:G",
+      "gray",
+      [
+        "v-24",
+        "*",
+        "h0"
+      ]
+    ],
+    [
+      "display:DP",
+      "uno:13",
+      "green",
+      [
+        "v0"
+      ]
+    ],
+    [
+      "led1:A",
+      "uno:5V",
+      "green",
+      [
+        "v238.91",
+        "h128.05"
+      ]
+    ],
+    [
+      "swa:3",
+      "leda:C",
+      "black",
+      [
+        "v10",
+        "h0"
+      ]
+    ],
+    [
+      "swa:2",
+      "leda:A",
+      "green",
+      [
+        "h0"
+      ]
+    ],
+    [
+      "uno:GND.3",
+      "leda:C",
+      "black",
+      [
+        "v0"
+      ]
+    ],
+    [
+      "encoder1:CLK",
+      "uno:A0",
+      "green",
+      [
+        "h0"
+      ]
+    ],
+    [
+      "encoder1:DT",
+      "uno:A1",
+      "green",
+      [
+        "h0"
+      ]
+    ],
+    [
+      "encoder1:SW",
+      "uno:A2",
+      "green",
+      [
+        "h0"
+      ]
+    ],
+    [
+      "encoder1:VCC",
+      "uno:5V",
+      "red",
+      [
+        "h0"
+      ]
+    ],
+    [
+      "encoder1:GND",
+      "uno:GND.3",
+      "black",
+      [
+        "h0"
+      ]
+    ],
+    [
+      "swa:1",
+      "uno:5V",
+      "red",
+      [
+        "h0"
+      ]
+    ],
+    [
+      "swa:2",
+      "uno:A4",
+      "green",
+      [
+        "h0"
+      ]
+    ],
+    [
+      "led1:C",
+      "uno:A5",
+      "green",
+      [
+        "v207.17",
+        "h245.19"
+      ]
+    ]
+  ]
+}
